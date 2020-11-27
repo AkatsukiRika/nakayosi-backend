@@ -1,2 +1,3 @@
-# koa-easy-server
-A simple template for setting up a Koa2 server.
+# nakayosi-backend
+The backend server of my smart phone application "nakayosi-uniapp".
+It's based on Koa2, a NodeJS server framework.
