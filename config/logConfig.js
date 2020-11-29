@@ -7,11 +7,6 @@ var errorPath = "/error";
 var errorFileName = "error";
 // 错误日志输出完整路径
 var errorLogPath = baseLogPath + errorPath + "/" + errorFileName;
-// TEST
-console.log('baseLogPath', baseLogPath);
-console.log('errorPath', errorPath);
-console.log('errorFileName', errorFileName);
-console.log('errorLogPath', errorLogPath);
 
 // 响应日志目录
 var responsePath = "/response";
@@ -19,11 +14,6 @@ var responsePath = "/response";
 var responseFileName = "response";
 // 响应日志输出完整路径
 var responseLogPath = baseLogPath + responsePath + "/" + responseFileName;
-// TEST
-console.log('baseLogPath', baseLogPath);
-console.log('responsePath', responsePath);
-console.log('responseFileName', responseFileName);
-console.log('responseLogPath', responseLogPath);
 
 module.exports = {
     "appenders": {

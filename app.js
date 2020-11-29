@@ -3,6 +3,7 @@ const app = new Koa()
 const views = require('koa-views')
 const json = require('koa-json')
 const onerror = require('koa-onerror')
+const cors = require('koa2-cors')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const logUtil = require('./utils/logUtil')
@@ -17,6 +18,7 @@ const router = require('./routes/index')
 onerror(app)
 
 // middlewares
+app.use(cors())
 app.use(bodyparser({
   enableTypes:['json', 'form', 'text']
 }))

@@ -22,7 +22,9 @@
     "pug": "^2.0.3"
   },
   "devDependencies": {
+    "koa2-cors": "^2.0.6",
     "log4js": "^6.3.0",
+    "moment": "^2.29.1",
     "nodemon": "^1.19.1"
   }
 }

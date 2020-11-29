@@ -1,6 +1,6 @@
 var router = require('koa-router')();
-var introRouter = require('./introRouter');
+var mainRouter = require('./mainRouter');
 
-router.use('/intro', introRouter.routes(), introRouter.allowedMethods());
+router.use('/main', mainRouter.routes(), mainRouter.allowedMethods());
 
 module.exports = router;
