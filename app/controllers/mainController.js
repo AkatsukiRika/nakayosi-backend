@@ -1,10 +1,12 @@
 const moment = require('moment')
 const os = require('os')
+const state = require('../../state')
 
 exports.getInfo = async (ctx, next) => {
+    console.log('state', state)
     ctx.body = {
-        'name': 'nakayosi-backend',
-        'version': '0.0.5 DEV',
+        'name': state.PROGRAM_NAME,
+        'version': state.VERSION_CODE,
         'serverTime': moment().format('YYYY-MM-DD HH:mm:ss'),
         'osType': os.type(),
         'osPlatform': os.platform(),
