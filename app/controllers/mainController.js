@@ -1,10 +1,9 @@
 const moment = require('moment')
 const os = require('os')
 const state = require('../../state')
-const jieba = require('nodejieba')
+const axios = require('axios')
 
 exports.getInfo = async (ctx, next) => {
-    console.log('state', state)
     ctx.body = {
         'name': state.PROGRAM_NAME,
         'version': state.VERSION_CODE,
@@ -17,41 +16,27 @@ exports.getInfo = async (ctx, next) => {
 }
 
 exports.getResultList = async (ctx, next) => {
-    // A method responding to user's input
-    const question = ctx.query.question
-    // Separate Chinese words and print it for test purpose
-    console.log('QUESTION #cut', jieba.cut(question))
-    console.log('QUESTION #tag', jieba.tag(question))
-    console.log('QUESTION #extract', jieba.extract(question, 100))
-    // Data structure updated
-    const resList = [{
-        "title": "标题1",
-        "question": "问题1",
-        "answers": [
-            "回答1-1",
-            "回答1-2",
-            "回答1-3",
-            "回答1-4"
-        ]
-    }, {
-        "title": "标题2",
-        "question": "问题2",
-        "answers": [
-            "回答2-1",
-            "回答2-2"
-        ]
-    }, {
-        "title": "标题3",
-        "question": "问题3",
-        "answers": [
-            "回答3-1",
-            "回答3-2",
-            "回答3-3"
-        ]
-    }]
+    const elasticReq = {
+        'query': {
+            'match': {
+                'question': ctx.query.question
+            }
+        }
+    }
+    const elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_MAIN_SUFFIX + state.ELASTIC_SEARCH_SUFFIX
+    const res = await axios.post(elasticUrl, elasticReq)
+    const resultList = res.data.hits.hits
+    let responseList = []
+    for (let i = 0; i < resultList.length; i++) {
+        responseList.push({
+            'title': resultList[i]._source.title,
+            'question': resultList[i]._source.question
+        })
+    }
+    // Return data
     ctx.body = {
-        'count': resList.length,
+        'count': responseList.length,
         'request': ctx.request,
-        'response': resList
+        'response': responseList
     }
 }

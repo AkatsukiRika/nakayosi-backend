@@ -1,6 +1,6 @@
 {
-  "name": "koa-easy-server",
-  "version": "0.1.0",
+  "name": "nakayosi-backend",
+  "version": "0.0.8",
   "private": true,
   "scripts": {
     "start": "NODE_ENV=development node bin/www",
@@ -22,6 +22,7 @@
     "pug": "^2.0.3"
   },
   "devDependencies": {
+    "axios": "^0.21.0",
     "koa2-cors": "^2.0.6",
     "log4js": "^6.3.0",
     "moment": "^2.29.1",
