@@ -1,9 +1,9 @@
 import codecs
 
-FILE_PATH_ORIGINAL = "./data/一心理问答数据.csv"
-FILE_PATH_UTF8 = "./data/psychology_utf8.csv"
-FILE_PATH_PROCESSED_UTF8 = "./data/psychology_processed.csv"
-FILE_PATH_PROCESSED_GBK = "./data/psychology_processed_gbk.csv"
+FILE_PATH_ORIGINAL = "../data/一心理问答数据.csv"
+FILE_PATH_UTF8 = "../data/psychology_utf8.csv"
+FILE_PATH_PROCESSED_UTF8 = "../data/psychology_processed.csv"
+FILE_PATH_PROCESSED_GBK = "../data/psychology_processed_gbk.csv"
 
 
 def read_file(file_path, encoding='gbk'):
@@ -27,5 +27,5 @@ def utf8_to_gbk(src, dst):
 
 
 if __name__ == '__main__':
-    # gbk_to_utf8(FILE_PATH_ORIGINAL, FILE_PATH_UTF8)
-    utf8_to_gbk(FILE_PATH_PROCESSED_UTF8, FILE_PATH_PROCESSED_GBK)
+    gbk_to_utf8(FILE_PATH_ORIGINAL, FILE_PATH_UTF8)
+    # utf8_to_gbk(FILE_PATH_PROCESSED_UTF8, FILE_PATH_PROCESSED_GBK)

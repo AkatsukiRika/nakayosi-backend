@@ -3,8 +3,8 @@ import json
 import requests
 import time
 
-FILE_PATH = './data/psychology_utf8.csv'
-OUTPUT_PATH = './data/psychology_processed.csv'
+FILE_PATH = '../data/psychology_utf8.csv'
+OUTPUT_PATH = '../data/psychology_processed.csv'
 USEFUL_COLUMNS = ['title', 'questions', 'answer_txt1', 'answer-txt2', 'answer_txt3',
                   'answer-txt4', 'answer_txt5', 'answer_txt6', 'answer_txt7',
                   'type']
