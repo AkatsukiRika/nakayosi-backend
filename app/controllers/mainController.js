@@ -3,6 +3,9 @@ const os = require('os')
 const state = require('../../state')
 const axios = require('axios')
 
+const DEFAULT_FROM = 0
+const DEFAULT_SIZE = 10
+
 exports.getInfo = async (ctx, next) => {
     ctx.body = {
         'name': state.PROGRAM_NAME,
@@ -21,7 +24,9 @@ exports.getResultList = async (ctx, next) => {
             'match': {
                 'question': ctx.query.question
             }
-        }
+        },
+        'from': ctx.query.from !== DEFAULT_FROM ? ctx.query.from : DEFAULT_FROM,
+        'size': ctx.query.size !== DEFAULT_SIZE ? ctx.query.size : DEFAULT_SIZE
     }
     const elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_MAIN_SUFFIX + state.ELASTIC_SEARCH_SUFFIX
     const res = await axios.post(elasticUrl, elasticReq)
@@ -29,6 +34,7 @@ exports.getResultList = async (ctx, next) => {
     let responseList = []
     for (let i = 0; i < resultList.length; i++) {
         responseList.push({
+            'id': resultList[i]._id,
             'title': resultList[i]._source.title,
             'question': resultList[i]._source.question
         })
@@ -38,5 +44,15 @@ exports.getResultList = async (ctx, next) => {
         'count': responseList.length,
         'request': ctx.request,
         'response': responseList
+    }
+}
+
+exports.getResultById = async (ctx, next) => {
+    const reqId = ctx.query.id
+    const elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_MAIN_SUFFIX + `/${reqId}?pretty=true`
+    const res = await axios.get(elasticUrl)
+    ctx.body = {
+        'found': res.data.found,
+        'source': res.data._source
     }
 }
