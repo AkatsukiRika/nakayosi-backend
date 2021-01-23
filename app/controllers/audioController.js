@@ -1,6 +1,12 @@
 const fs = require('fs')
 const util = require('util')
 const state = require('../../state')
+const ApiError = require('../error/ApiError')
+const ApiErrorNames = require('../error/ApiErrorNames')
+const path = require('path')
+
+// Audio path on server
+const serverPath = path.resolve(path.join(__dirname, '../../', state.AUDIO_PATH_PREFIX))
 
 function getFileNumFromAudioName(name) {
     return Number(name.split('_', 3)[1])
@@ -19,6 +25,8 @@ function audioNameArraySort(nameA, nameB) {
 
 /**
  * @author MizunoAkari
+ * DO NOT USE IT WHEN CLIENT AUDIO LIST IS EMPTY
+ * IN THAT CASE, USE 'getServerAudioNameList' INSTEAD
  * @method POST
  * @param {
  *    "localAudioList": [
@@ -45,11 +53,11 @@ exports.checkUpdate = async (ctx, next) => {
     // TODO: ADD UNIT TEST FOR THIS FUNCTION!!
     const clientList = ctx.request.body.localAudioList
     clientList.sort(audioNameArraySort)
-    console.log('CLIENT_LIST', clientList)
+    // console.log('CLIENT_LIST', clientList)
     const readDir = util.promisify(fs.readdir)
-    const serverList = await readDir(state.AUDIO_PATH_PREFIX)
+    const serverList = await readDir(serverPath)
     serverList.sort(audioNameArraySort)
-    console.log('SERVER_LIST', serverList)
+    // console.log('SERVER_LIST', serverList)
     let updateList = []
     let addList = []
     let delList = []
@@ -57,20 +65,20 @@ exports.checkUpdate = async (ctx, next) => {
     let serverPtr = 0
     while (clientPtr < clientList.length && serverPtr < serverList.length) {
         const fileNumI = getFileNumFromAudioName(clientList[clientPtr])
-        console.log('FILE_NUM_I', fileNumI)
+        // console.log('FILE_NUM_I', fileNumI)
         const fileNumJ = getFileNumFromAudioName(serverList[serverPtr])
-        console.log('FILE_NUM_J', fileNumJ)
+        // console.log('FILE_NUM_J', fileNumJ)
         const versionI = getVersionFromAudioName(clientList[clientPtr])
-        console.log('VERSION_I', versionI)
+        // console.log('VERSION_I', versionI)
         const versionJ = getVersionFromAudioName(serverList[serverPtr])
-        console.log('VERSION_J', versionJ)
+        // console.log('VERSION_J', versionJ)
         if (fileNumI === fileNumJ) {
             if (versionI < versionJ) {
                 updateList.push(serverList[serverPtr])
             } else if (versionI === versionJ) {
                 // no-op
             } else {
-                // TODO: API ERROR!
+                throw new ApiError(ApiErrorNames.AUDIO_VERSION_ERROR)
             }
             clientPtr++
             serverPtr++
@@ -86,5 +94,15 @@ exports.checkUpdate = async (ctx, next) => {
         "updateList": updateList,
         "addList": addList,
         "delList": delList
+    }
+}
+
+exports.getServerAudioNameList = async (ctx, next) => {
+    const readDir = util.promisify(fs.readdir)
+    console.log('PATH', serverPath)
+    const serverList = await readDir(serverPath)
+    serverList.sort(audioNameArraySort)
+    ctx.body = {
+        "audioList": serverList
     }
 }

@@ -4,7 +4,7 @@
 var ApiErrorNames = {};
 
 ApiErrorNames.UNKNOWN_ERROR = "unknownError";
-ApiErrorNames.INTRO_NOT_EXISTS = "introNotExists";
+ApiErrorNames.AUDIO_VERSION_ERROR = "audioVersionError";
 
 /**
  * API错误名称及对应的错误信息
@@ -13,11 +13,11 @@ const errorMap = new Map();
 
 errorMap.set(ApiErrorNames.UNKNOWN_ERROR, {
     code: -1,
-    message: '未知错误'
+    message: 'unknown error'
 });
-errorMap.set(ApiErrorNames.INTRO_NOT_EXISTS, {
-    code: 101,
-    message: '介绍不存在'
+errorMap.set(ApiErrorNames.AUDIO_VERSION_ERROR, {
+    code: -2,
+    message: 'audio version number in client greater than server'
 });
 
 ApiErrorNames.getErrorInfo = (errorName) => {
