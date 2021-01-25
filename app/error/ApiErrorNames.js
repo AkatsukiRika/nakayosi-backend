@@ -5,6 +5,7 @@ var ApiErrorNames = {};
 
 ApiErrorNames.UNKNOWN_ERROR = "unknownError";
 ApiErrorNames.AUDIO_VERSION_ERROR = "audioVersionError";
+ApiErrorNames.AUDIO_NAME_ERROR = "audioNameError";
 
 /**
  * API错误名称及对应的错误信息
@@ -18,6 +19,10 @@ errorMap.set(ApiErrorNames.UNKNOWN_ERROR, {
 errorMap.set(ApiErrorNames.AUDIO_VERSION_ERROR, {
     code: -2,
     message: 'audio version number in client greater than server'
+});
+errorMap.set(ApiErrorNames.AUDIO_NAME_ERROR, {
+    code: -3,
+    message: 'audio name not exists on server'
 });
 
 ApiErrorNames.getErrorInfo = (errorName) => {

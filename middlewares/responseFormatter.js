@@ -39,6 +39,10 @@ var urlFilter = function (pattern) {
             // 继续抛出错误，让外层中间件处理日志
             throw error;
         }
+        // 2021.1.26添加：返回文件流的/api/audio/getAudio接口不格式化
+        if (ctx.originalUrl.includes('getAudioStream')) {
+            return
+        }
         // 符合条件的URL进行格式化
         if (reg.test(ctx.originalUrl)) {
             responseFormatter(ctx);

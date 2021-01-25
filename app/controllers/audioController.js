@@ -106,3 +106,14 @@ exports.getServerAudioNameList = async (ctx, next) => {
         "audioList": serverList
     }
 }
+
+exports.getAudioStream = async (ctx, next) => {
+    const fileName = path.join(__dirname, '../../', state.AUDIO_PATH_PREFIX, ctx.params.fileName)
+    console.log('DEBUG', `getAudio(): fileName = ${fileName}`)
+    if (fs.existsSync(fileName)) {
+        ctx.body = fs.createReadStream(fileName)
+        ctx.attachment(fileName)
+    } else {
+        throw new ApiError(ApiErrorNames.AUDIO_NAME_ERROR)
+    }
+}
