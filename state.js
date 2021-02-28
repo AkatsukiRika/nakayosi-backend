@@ -7,6 +7,7 @@ const state = {
     ELASTIC_MAIN_SUFFIX: '/question/main',
     ELASTIC_SEARCH_SUFFIX: '/_search',
     ELASTIC_QUESTION_DEL_SUFFIX: '/question/_delete_by_query',
+    ELASTIC_USER_SUFFIX: '/user/main',
     // resources on server
     AUDIO_PATH_PREFIX: '/public/nkbgm'
 }

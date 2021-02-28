@@ -6,29 +6,60 @@ It's based on Koa2, a NodeJS server framework.
 Initilization Command: `curl -X PUT http://127.0.0.1:9200/question`  
 ```json
 {
-    "mappings": {
-        "main": {
-            "properties": {
-                "title": {
-                    "type": "text",
-                    "analyzer": "ik_max_word",
-                    "search_analyzer": "ik_max_word"
-                },
-                "question": {
-                    "type": "text",
-                    "analyzer": "ik_max_word",
-                    "search_analyzer": "ik_max_word"
-                },
-                "answers": {
-                    "type": "text",
-                    "analyzer": "ik_max_word",
-                    "search_analyzer": "ik_max_word"
-                },
-                "type": {
-                    "type": "keyword"
-                }
-            }
+  "mappings": {
+    "main": {
+      "properties": {
+        "title": {
+          "type": "text",
+          "analyzer": "ik_max_word",
+          "search_analyzer": "ik_max_word"
+        },
+        "question": {
+          "type": "text",
+          "analyzer": "ik_max_word",
+          "search_analyzer": "ik_max_word"
+        },
+        "answers": {
+          "type": "text",
+          "analyzer": "ik_max_word",
+          "search_analyzer": "ik_max_word"
+        },
+        "type": {
+          "type": "keyword"
         }
+      }
     }
+  }
+}
+```
+User Model: `curl -X PUT http://127.0.0.1:9200/user`
+```json
+{
+  "mappings": {
+    "main": {
+      "properties": {
+        "realName": {
+          "type": "keyword"
+        },
+        "idNumber": {
+          "type": "keyword"
+        },
+        "phoneNumber": {
+          "type": "keyword"
+        },
+        "email": {
+          "type": "keyword"
+        },
+        "richText": {
+          "type": "keyword",
+          "index": "false"
+        },
+        "password": {
+          "type": "keyword",
+          "index": "false"
+        }
+      }
+    }
+  }
 }
 ```
