@@ -1,8 +1,15 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.backstage-container {
+    padding-left: 0;
+    padding-right: 0;
+    overflow-x: hidden;
 }
 
-a {
-  color: #00B7FF;
+body {
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: top;
+    background-image: url(../images/nakayosi-web-index-bg.jpg);
+    color: white;
 }

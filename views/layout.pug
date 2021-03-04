@@ -1,7 +1,16 @@
 doctype html
 html
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    title 仲吉后台
+    link(rel='stylesheet', href='https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css')
   body
-    block content
+    .backstage-container.container-fluid.d-flex.h-100.flex-column
+      include ./navBar.pug
+      block content
+    style
+      include ../public/stylesheets/style.css
+    script(src='https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js')
+    script(src='https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js')
+    script(src='https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js')

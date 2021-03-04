@@ -1,0 +1,15 @@
+extends layout 
+
+block content 
+  .row.flex-grow-1
+    .login-form.col-md-4.offset-md-4.align-self-center
+      form
+        .form-group 
+          label(for='username') 用户名
+          input.form-control#username(type='text') 
+        .form-group 
+          label(for='password') 密码
+          input.form-control#password(type='password')
+        button.login-button.btn.btn-primary(type='submit') 登录
+  style 
+    include ../public/stylesheets/login.css

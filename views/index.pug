@@ -1,5 +1,9 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  .row.flex-grow-1
+    .home-page-description.col-md-4.offset-md-4.align-self-center
+      h2.home-page-title 欢迎来到后台管理系统
+      p.home-page-subtitle 请登录后选择上方导航栏的项目进行操作
+  style
+    include ../public/stylesheets/index.css
