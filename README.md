@@ -63,3 +63,27 @@ User Model: `curl -X PUT http://127.0.0.1:9200/user`
   }
 }
 ```
+Administrator Model: `curl -X PUT http://127.0.0.1:9200/admin`
+```json
+{
+  "mappings": {
+    "main": {
+      "properties": {
+        "username": {
+          "type": "keyword"
+        },
+        "password": {
+          "type": "keyword",
+          "index": "false"
+        },
+        "phoneNumber": {
+          "type": "keyword"
+        },
+        "email": {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}
+```

@@ -6,18 +6,24 @@ const onerror = require('koa-onerror')
 const cors = require('koa2-cors')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
+const KoaSession = require('koa-session')
 const logUtil = require('./utils/logUtil')
 
 const router = require('koa-router')()
 const index = require('./routes/index')
-const users = require('./routes/users')
 const api = require('./routes/api')
 const responseFormatter = require('./middlewares/responseFormatter')
+const sessionConfig = require('./config/sessionConfig')
 
 // error handler
 onerror(app)
 
+// initialize session
+const koaSession = KoaSession(sessionConfig.sessionConfig, app)
+app.keys = sessionConfig.sessionSignedKey
+
 // middlewares
+app.use(koaSession)
 app.use(cors())
 app.use(bodyparser({
   enableTypes:['json', 'form', 'text']
