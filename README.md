@@ -73,8 +73,7 @@ Administrator Model: `curl -X PUT http://127.0.0.1:9200/admin`
           "type": "keyword"
         },
         "password": {
-          "type": "keyword",
-          "index": "false"
+          "type": "keyword"
         },
         "phoneNumber": {
           "type": "keyword"
