@@ -7,6 +7,15 @@
     text-align: center;
 }
 
+.home-page-subtitle-login {
+    text-align: center;
+}
+
 .home-page-subtitle {
     text-align: center;
+    display: none;
+}
+
+.drop-logout {
+    display: none;
 }

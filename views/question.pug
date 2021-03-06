@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  .row.question-row
+    table.question-table.table.table-bordered 
+      thead 
+        tr 
+          th.question-th-id ID 
+          th.question-th-title 标题
+          th 问题内容
+          th.question-th-answer 回答
+          th.question-th-type 类别标签
+      tbody.question-table-body
+  style 
+    include ../public/stylesheets/question.css
+  script 
+    include ../public/javascripts/question.js

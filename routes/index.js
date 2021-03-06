@@ -12,4 +12,8 @@ router.get('application', async (ctx, next) => {
   await ctx.render('application')
 })
 
+router.get('question', async (ctx, next) => {
+  await ctx.render('question')
+})
+
 module.exports = router
