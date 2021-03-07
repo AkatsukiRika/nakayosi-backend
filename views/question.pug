@@ -11,6 +11,14 @@ block content
           th.question-th-answer 回答
           th.question-th-type 类别标签
       tbody.question-table-body
+  .row.pagination-row 
+    ul.question-pagination.pagination
+      li.page-changer.page-item
+        a.page-link-prev.page-link(href='') PREV 
+      li.page-item 
+        a.page-count.page-link 共 0 页
+      li.page-changer.page-item
+        a.page-link-next.page-link(href='') NEXT 
   style 
     include ../public/stylesheets/question.css
   script 

@@ -76,6 +76,18 @@ exports.getResultListBg = async (ctx, next) => {
     }
 }
 
+/**
+ * 后台使用，获取数据总量
+ */
+exports.getTotalDataCount = async (ctx, next) => {
+    const elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_MAIN_SUFFIX + state.ELASTIC_SEARCH_SUFFIX
+    const res = await axios.post(elasticUrl)
+    const totalCount = res.data.hits.total
+    ctx.body = {
+        'totalCount': totalCount
+    }
+}
+
 exports.getResultById = async (ctx, next) => {
     const reqId = ctx.query.id
     const elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_MAIN_SUFFIX + `/${reqId}?pretty=true`
