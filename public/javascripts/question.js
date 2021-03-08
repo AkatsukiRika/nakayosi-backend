@@ -14,19 +14,8 @@ $(document).ready(function () {
         var responseList = realData.response
         // 添加到暂存数组
         curPageData = responseList
-
-        var responseTrList = []
-        for (let i = 0; i < responseList.length; i++) {
-          var responseTr = 
-            '<tr>\n' +
-            `\t<td class="question-td-id" id="${i}">` + responseList[i].id + '</td>\n' +
-            `\t<td class="question-td-title">` + responseList[i].title + '</td>\n' +
-            `\t<td class="question-td-content">` + responseList[i].question + '</td>\n' +
-            `\t<td class="question-td-answer">` + '共' + responseList[i].answerCount + '条' + '</td>\n' +
-            '\t<td>' + responseList[i].type + '</td>\n'
-          responseTrList.push(responseTr)
-        }
-        $('.question-table-body').html(responseTrList)
+        // 更新界面数据
+        updateData(responseList)
         // 设置ID的点击事件
         $('.question-td-id').click(function () {
           // 设置模态框内的内容
@@ -38,6 +27,21 @@ $(document).ready(function () {
         })
       }
     )
+  }
+
+  function updateData(questionList) {
+    var responseTrList = []
+    for (let i = 0; i < questionList.length; i++) {
+      var responseTr = 
+        '<tr>\n' +
+        `\t<td class="question-td-id" id="${i}">` + questionList[i].id + '</td>\n' +
+        `\t<td class="question-td-title">` + questionList[i].title + '</td>\n' +
+        `\t<td class="question-td-content">` + questionList[i].question + '</td>\n' +
+        `\t<td class="question-td-answer">` + '共' + questionList[i].answerCount + '条' + '</td>\n' +
+        '\t<td>' + questionList[i].type + '</td>\n'
+      responseTrList.push(responseTr)
+    }
+    $('.question-table-body').html(responseTrList)
   }
 
   function setModalContent(questionObj) {
@@ -116,4 +120,38 @@ $(document).ready(function () {
       setPagination(totalPages)
     }
   )
+
+  // 根据问题ID精确检索
+  $('.link-precise-search').click(function (e) {
+    e.preventDefault()
+    var questionId = $('.question-search-input').val()
+    if (!questionId) {
+      alert('问题ID不可为空')
+    } else {
+      // 请求后端API
+      $.get(
+        `/api/main/getResultById?id=${questionId}`,
+        {},
+        function (data, status) {
+          var realData = data.data
+          console.log('getResultById#res', realData)
+          if (realData.found) {
+            var source = realData.source
+            var questionObj = {
+              'id': questionId,
+              'title': source.title,
+              'question': source.question,
+              'answers': source.answers,
+              'type': source.type
+            }
+            // 直接设置并弹出模态框
+            setModalContent(questionObj)
+            $('#detail-modal').modal()
+          } else {
+            alert('无效条目')
+          }
+        }
+      )
+    }
+  })
 })

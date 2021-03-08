@@ -33,6 +33,10 @@
     width: 10%;
 }
 
+.question-td-id {
+    cursor: pointer;
+}
+
 .question-td-content {
     white-space: nowrap;
     overflow: hidden;

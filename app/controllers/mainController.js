@@ -91,10 +91,19 @@ exports.getTotalDataCount = async (ctx, next) => {
 
 exports.getResultById = async (ctx, next) => {
     const reqId = ctx.query.id
-    const elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_MAIN_SUFFIX + `/${reqId}?pretty=true`
-    const res = await axios.get(elasticUrl)
+    const elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_MAIN_SUFFIX + state.ELASTIC_SEARCH_SUFFIX
+    const elasticReq = {
+        'query': {
+            'ids': {
+                'values': [reqId]
+            }
+        }
+    }
+    const res = await axios.post(elasticUrl, elasticReq)
+    const resData = res.data
+    const hitObj = resData.hits
     ctx.body = {
-        'found': res.data.found,
-        'source': res.data._source
+        'found': !(hitObj.total === 0),
+        'source': (hitObj.total !== 0) ? hitObj.hits[0]._source : null
     }
 }

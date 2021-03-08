@@ -21,9 +21,14 @@ $(document).ready(function() {
         $('.home-page-subtitle').css('display', 'none')
         // 在导航栏“用户信息”处显示默认字样
         $('.drop-current-user').text('当前用户: 游客')
-         // 导航栏“用户信息”处只显示登录按钮
+        // 导航栏“用户信息”处只显示登录按钮
         $('.drop-login').css('display', 'block')
         $('.drop-logout').css('display', 'none')
+        // 点击导航栏上的所有项目都直接跳转登录页面
+        $('.nav-link').click(function (e) {
+          e.preventDefault()
+          window.location.href = '/login'
+        })
       }
     }
   )

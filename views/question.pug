@@ -3,13 +3,16 @@ extends layout
 block content
   .row.search-row 
     .input-group.question-input-group  
-      input.form-control(type='text', placeholder='请在此处输入内容进行检索；得到结果后点击表格内的「问题ID」，可查看该条目相关的详细信息')
+      input.question-search-input.form-control(
+        type='text', 
+        placeholder='请在此处输入内容进行检索；得到结果后点击表格内的「问题ID」，可查看该条目相关的详细信息'
+      )
       .input-group-append 
         button.btn.btn-outline-secondary.dropdown-toggle(type='button', data-toggle='dropdown') 
           | 选择检索方式
         .dropdown-menu 
-          a.dropdown-item(href='') 精确检索（输入问题ID）
-          a.dropdown-item(href='') 模糊匹配（输入关键字）
+          a.dropdown-item.link-precise-search(href='') 精确检索（输入问题ID）
+          a.dropdown-item.link-blurry-match(href='') 模糊匹配（输入关键字）
   .row.question-row
     // 带Dropdown Button的输入框，支持按ID精确锁定或通过Elastic模糊检索问题
     table.question-table.table.table-bordered 
