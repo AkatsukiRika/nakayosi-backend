@@ -49,7 +49,7 @@ exports.getResultList = async (ctx, next) => {
 
 /**
  * 后台使用的，用来获得所有问题列表的接口
- * 跟getResultList接口相比，不需要传入question参数，返回的字段增加了answerCount、type
+ * 跟getResultList接口相比，不需要传入question参数，返回的字段增加了answerCount、answers、type
  */
 exports.getResultListBg = async (ctx, next) => {
     const elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_MAIN_SUFFIX + state.ELASTIC_SEARCH_SUFFIX
@@ -66,6 +66,7 @@ exports.getResultListBg = async (ctx, next) => {
             'title': resultList[i]._source.title,
             'question': resultList[i]._source.question,
             'answerCount': resultList[i]._source.answers.length,
+            'answers': resultList[i]._source.answers,
             'type': resultList[i]._source.type
         })
     }

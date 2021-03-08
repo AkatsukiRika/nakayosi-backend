@@ -1,7 +1,17 @@
 extends layout
 
 block content
+  .row.search-row 
+    .input-group.question-input-group  
+      input.form-control(type='text', placeholder='请在此处输入内容进行检索；得到结果后点击表格内的「问题ID」，可查看该条目相关的详细信息')
+      .input-group-append 
+        button.btn.btn-outline-secondary.dropdown-toggle(type='button', data-toggle='dropdown') 
+          | 选择检索方式
+        .dropdown-menu 
+          a.dropdown-item(href='') 精确检索（输入问题ID）
+          a.dropdown-item(href='') 模糊匹配（输入关键字）
   .row.question-row
+    // 带Dropdown Button的输入框，支持按ID精确锁定或通过Elastic模糊检索问题
     table.question-table.table.table-bordered 
       thead 
         tr 
@@ -19,6 +29,36 @@ block content
         a.page-count.page-link 共 0 页
       li.page-changer.page-item
         a.page-link-next.page-link(href='') NEXT 
+  // 模态框，在点击ID时开启
+  .modal.fade#detail-modal(tabindex='-1')
+    .modal-dialog 
+      .modal-content 
+        .modal-header 
+          h5.modal-title.question-modal-id 问题ID 
+        .modal-body 
+          p
+            span.modal-bold 标题：
+            br/
+            span.question-modal-title Question Title
+          p 
+            span.modal-bold 问题内容：
+            br/ 
+            span.question-modal-content Question Content 
+          .modal-answer
+            p
+              span.modal-bold 回答1：
+              br/ 
+              span Answer Text 1
+            p
+              span.modal-bold 回答2：
+              br/ 
+              span Answer Text 2
+          p
+            span.modal-bold 类别标签：
+            br/ 
+            span.question-modal-type Type
+        .modal-footer 
+          button.btn.btn-secondary(type='button', data-dismiss='modal') 完成
   style 
     include ../public/stylesheets/question.css
   script 

@@ -5,6 +5,12 @@
     background-color: #00000080;
 }
 
+.search-row {
+    margin-top: 15px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
 .question-table {
     color: white;
     table-layout: fixed;
@@ -46,5 +52,13 @@
 }
 
 .page-changer {
+    font-weight: bold;
+}
+
+#detail-modal {
+    color: black;
+}
+
+.modal-bold {
     font-weight: bold;
 }

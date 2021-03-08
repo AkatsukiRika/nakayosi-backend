@@ -13,14 +13,13 @@ $(document).ready(function () {
         console.log('getResultListBg#res', realData)
         var responseList = realData.response
         // 添加到暂存数组
-        curPageData = []
-        curPageData.push(responseList)
+        curPageData = responseList
 
         var responseTrList = []
         for (let i = 0; i < responseList.length; i++) {
           var responseTr = 
             '<tr>\n' +
-            `\t<td class="question-td-id">` + responseList[i].id + '</td>\n' +
+            `\t<td class="question-td-id" id="${i}">` + responseList[i].id + '</td>\n' +
             `\t<td class="question-td-title">` + responseList[i].title + '</td>\n' +
             `\t<td class="question-td-content">` + responseList[i].question + '</td>\n' +
             `\t<td class="question-td-answer">` + '共' + responseList[i].answerCount + '条' + '</td>\n' +
@@ -30,10 +29,33 @@ $(document).ready(function () {
         $('.question-table-body').html(responseTrList)
         // 设置ID的点击事件
         $('.question-td-id').click(function () {
-          alert($(this).text())
+          // 设置模态框内的内容
+          var index = $(this).attr('id')
+          var questionObj = curPageData[index]
+          setModalContent(questionObj)
+          // 弹出模态框
+          $('#detail-modal').modal()
         })
       }
     )
+  }
+
+  function setModalContent(questionObj) {
+    // 设置模态框内容
+    $('.question-modal-id').text(questionObj.id)
+    $('.question-modal-title').text(questionObj.title)
+    $('.question-modal-content').text(questionObj.question)
+    var answerList = questionObj.answers 
+    $('.modal-answer').html('')
+    for (let i = 0; i < answerList.length; i++) {
+      var docString =
+        '<p>\n' +
+        `\t<span class="modal-bold">回答${i + 1}：</span>\n` +
+        '\t<br />\n' +
+        '\t<span>' + answerList[i] + '</span>\n'
+      $('.modal-answer').append(docString)
+    }
+    $('.question-modal-type').text(questionObj.type)
   }
 
   function setPagination(totalPages) {
