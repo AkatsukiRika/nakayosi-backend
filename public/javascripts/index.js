@@ -25,7 +25,7 @@ $(document).ready(function() {
         $('.drop-login').css('display', 'block')
         $('.drop-logout').css('display', 'none')
         // 点击导航栏上的所有项目都直接跳转登录页面
-        $('.nav-link').click(function (e) {
+        $('.nav-need-login').click(function (e) {
           e.preventDefault()
           window.location.href = '/login'
         })

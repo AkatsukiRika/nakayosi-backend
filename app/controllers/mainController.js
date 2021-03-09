@@ -49,13 +49,21 @@ exports.getResultList = async (ctx, next) => {
 
 /**
  * 后台使用的，用来获得所有问题列表的接口
- * 跟getResultList接口相比，不需要传入question参数，返回的字段增加了answerCount、answers、type
+ * 跟getResultList接口相比，不必须传入question参数，返回的字段增加了answerCount、answers、type
+ * 同时，count代表与当前query匹配的全部匹配数量
  */
 exports.getResultListBg = async (ctx, next) => {
     const elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_MAIN_SUFFIX + state.ELASTIC_SEARCH_SUFFIX
     const elasticReq = {
         'from': ctx.query.from !== DEFAULT_FROM ? ctx.query.from : DEFAULT_FROM,
         'size': ctx.query.size !== DEFAULT_SIZE ? ctx.query.size : DEFAULT_SIZE
+    }
+    if (ctx.query.question) {
+        elasticReq.query = {
+            'match': {
+                'question': ctx.query.question
+            }
+        }
     }
     const res = await axios.post(elasticUrl, elasticReq)
     const resultList = res.data.hits.hits
@@ -71,7 +79,7 @@ exports.getResultListBg = async (ctx, next) => {
         })
     }
     ctx.body = {
-        'count': responseList.length,
+        'count': res.data.hits.total,
         'request': ctx.request,
         'response': responseList
     }

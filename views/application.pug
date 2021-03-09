@@ -1,4 +1,15 @@
 extends layout 
 
-block content 
-  | This is the application page.
+block content
+  .row.application-row 
+    table.application-table.table.table-bordered 
+      thead 
+        tr 
+          th ID 
+          th 真实姓名
+          th 身份证号
+          th 手机号码
+          th 电子邮箱
+      tbody.application-table-body
+  style 
+    include ../public/stylesheets/application.css

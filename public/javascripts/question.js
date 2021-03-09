@@ -1,13 +1,17 @@
 $(document).ready(function () {
   /* 方法定义 START */
-  function getResultList(from) {
+  function getResultList(from, question, initPagination = true) {
     // 请求后台结果，获得所有问题
+    var params = {
+      'from': from,
+      'size': pageSize
+    }
+    if (question) {
+      params.question = question
+    }
     $.get(
       '/api/main/getResultListBg',
-      {
-        'from': from,
-        'size': pageSize
-      },
+      params,
       function (data, status) {
         var realData = data.data
         console.log('getResultListBg#res', realData)
@@ -25,6 +29,14 @@ $(document).ready(function () {
           // 弹出模态框
           $('#detail-modal').modal()
         })
+        // 设置分页
+        var dataCount = realData.count 
+        var totalPages = Math.round(dataCount / pageSize)
+        // 设置分页器显示
+        $('.page-count').text('当前 ' + currentPage + ' / ' + totalPages + ' 页')
+        if (initPagination) {
+          setPagination(totalPages, question)
+        }
       }
     )
   }
@@ -62,7 +74,8 @@ $(document).ready(function () {
     $('.question-modal-type').text(questionObj.type)
   }
 
-  function setPagination(totalPages) {
+  function setPagination(totalPages, question) {
+    // 设置PREV、NEXT两个换页按钮的事件
     $('.page-link-prev').click(function (e) {
       // 屏蔽跳转事件
       e.preventDefault()
@@ -73,7 +86,7 @@ $(document).ready(function () {
         currentPage--
         // 请求后台接口，更新数据
         var currentFrom = (currentPage - 1) * pageSize
-        getResultList(currentFrom)
+        getResultList(currentFrom, question, false)
         // 设置分页器显示
         $('.page-count').text('当前 ' + currentPage + ' / ' + totalPages + ' 页')
       }
@@ -87,10 +100,16 @@ $(document).ready(function () {
       } else {
         currentPage++
         var currentFrom = (currentPage - 1) * pageSize
-        getResultList(currentFrom)
+        getResultList(currentFrom, question, false)
         $('.page-count').text('当前 ' + currentPage + ' / ' + totalPages + ' 页')
       }
     })
+  }
+
+  function clearPagination() {
+    // 清除PREV、NEXT按钮已经被绑定上的点击事件
+    $('.page-link-prev').off('click')
+    $('.page-link-next').off('click')
   }
   /* 方法定义 END */
 
@@ -101,25 +120,7 @@ $(document).ready(function () {
   var curPageData = []
 
   // 请求后台结果，获得所有问题
-  getResultList(currentPage - 1)
-
-  // 获得问题总数
-  $.get(
-    '/api/main/getTotalDataCount',
-    {},
-    function (data, status) {
-      var realData = data.data
-      console.log('getTotalDataCount#res', realData)
-      var totalCount = realData.totalCount
-      // 计算总页数
-      var totalPages = Math.round(totalCount / pageSize)
-      console.log('totalPages', totalPages)
-      // 写入分页器
-      $('.page-count').text('当前 ' + currentPage + ' / ' + totalPages + ' 页')
-      // 设置换页方法
-      setPagination(totalPages)
-    }
-  )
+  getResultList(0)
 
   // 根据问题ID精确检索
   $('.link-precise-search').click(function (e) {
@@ -152,6 +153,20 @@ $(document).ready(function () {
           }
         }
       )
+    }
+  })
+
+  // 模糊匹配问题
+  $('.link-blurry-match').click(function (e) {
+    e.preventDefault()
+    var content = $('.question-search-input').val()
+    if (!content) {
+      alert('输入内容不可为空')
+    } else {
+      // 更新界面数据并设置分页
+      currentPage = 1
+      clearPagination()
+      getResultList(0, content, true)
     }
   })
 })

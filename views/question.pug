@@ -2,6 +2,7 @@ extends layout
 
 block content
   .row.search-row 
+    // 带Dropdown Button的输入框，支持按ID精确锁定或通过Elastic模糊检索问题
     .input-group.question-input-group  
       input.question-search-input.form-control(
         type='text', 
@@ -14,7 +15,6 @@ block content
           a.dropdown-item.link-precise-search(href='') 精确检索（输入问题ID）
           a.dropdown-item.link-blurry-match(href='') 模糊匹配（输入关键字）
   .row.question-row
-    // 带Dropdown Button的输入框，支持按ID精确锁定或通过Elastic模糊检索问题
     table.question-table.table.table-bordered 
       thead 
         tr 
