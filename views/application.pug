@@ -11,5 +11,32 @@ block content
           th 手机号码
           th 电子邮箱
       tbody.application-table-body
+  // 模态框，在点击ID时开启
+  .modal.fade#detail-modal(tabindex='-1')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h5.modal-title.application-modal-id 申请ID
+        .modal-body 
+          p 
+            span.modal-bold 真实姓名：
+            br/
+            span.application-modal-name Real Name 
+          p 
+            span.modal-bold 身份证号：
+            br/
+            span.application-modal-id-num ID Number 
+          p 
+            span.modal-bold 手机号码
+            br/
+            span.application-modal-phone Phone Number 
+          p 
+            span.modal-bold 电子邮箱
+            br/
+            span.application-modal-email Email Address
+        .modal-footer 
+          button.btn.btn-secondary(type='button', data-dismiss='modal') 完成
   style 
     include ../public/stylesheets/application.css
+  script 
+    include ../public/javascripts/application.js

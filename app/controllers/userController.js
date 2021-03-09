@@ -1,6 +1,9 @@
 const state = require('../../state')
 const axios = require('axios')
 
+const DEFAULT_FROM = 0
+const DEFAULT_SIZE = 25
+
 /**
  * @method POST
  * @param {realName} 真实姓名(string)
@@ -50,5 +53,39 @@ exports.setProUserPassword = async (ctx, next) => {
     ctx.body = {
         'status': resStatus,
         'version': resVersion
+    }
+}
+
+exports.getProUserListBg = async (ctx, next) => {
+    const queryParams = ctx.query
+    const elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_USER_SUFFIX + state.ELASTIC_SEARCH_SUFFIX
+    const elasticReq = {
+        'from': queryParams.from ? queryParams.from : DEFAULT_FROM,
+        'size': queryParams.size ? queryParams.size : DEFAULT_SIZE
+    }
+    if (queryParams.realName) {
+        elasticReq.query = {
+            'match': {
+                'realName': queryParams.realName
+            }
+        }
+    }
+    const res = await axios.post(elasticUrl, elasticReq)
+    const resultList = res.data.hits.hits
+    let responseList = []
+    for (let i = 0; i < resultList.length; i++) {
+        responseList.push({
+            'id': resultList[i]._id,
+            'realName': resultList[i]._source.realName,
+            'idNumber': resultList[i]._source.idNumber,
+            'phoneNumber': resultList[i]._source.phoneNumber,
+            'email': resultList[i]._source.email,
+            'richText': resultList[i]._source.richText,
+            'password': resultList[i]._source.password
+        })
+    }
+    ctx.body = {
+        'count': res.data.hits.total,
+        'response': responseList
     }
 }

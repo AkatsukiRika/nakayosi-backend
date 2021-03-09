@@ -9,3 +9,11 @@
     color: white;
     margin-bottom: 0;
 }
+
+#detail-modal {
+    color: black;
+}
+
+.application-td-id {
+    cursor: pointer;
+}
