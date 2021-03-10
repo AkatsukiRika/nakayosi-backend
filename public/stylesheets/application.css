@@ -17,3 +17,11 @@
 .application-td-id {
     cursor: pointer;
 }
+
+.modal-bold {
+    font-weight: bold;
+}
+
+.review-btn {
+    display: none;
+}

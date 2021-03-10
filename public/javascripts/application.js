@@ -47,6 +47,20 @@ $(document).ready(function () {
     $('.application-table-body').html(trList)
   }
 
+  function clearParseJson(jsonStr) {
+    // 清理JSON字符串并解析，返回解析后的结果(Object)
+    jsonStr = jsonStr.replace(/\\n/g, "\\n")
+                     .replace(/\\'/g, "\\'")
+                     .replace(/\\"/g, '\\"')
+                     .replace(/\\&/g, "\\&")
+                     .replace(/\\r/g, "\\r")
+                     .replace(/\\t/g, "\\t")
+                     .replace(/\\b/g, "\\b")
+                     .replace(/\\f/g, "\\f")
+                     .replace(/[\u0000-\u0019]+/g, "")
+    return JSON.parse(jsonStr)
+  }
+
   function setModalContent(applicationObj) {
     // 设置模态框内容
     $('.application-modal-id').text(applicationObj.id)
@@ -54,12 +68,60 @@ $(document).ready(function () {
     $('.application-modal-id-num').text(applicationObj.idNumber)
     $('.application-modal-phone').text(applicationObj.phoneNumber)
     $('.application-modal-email').text(applicationObj.email)
+
+    // 设置Quill文本框
+    if (!quill) {
+      quill = new Quill('.application-modal-text', {
+        theme: 'bubble'
+      })
+    }
+    var textArray = clearParseJson(applicationObj.richText)
+    console.log('parsedRichText', textArray)
+    quill.setContents(textArray)
+    // 申请内容不允许改动
+    quill.enable(false)
+
+    if (!applicationObj.password) {
+      $('.review-btn-accept').show()
+      $('.review-btn-decline').show()
+    } else {
+      $('.review-btn-accept').hide()
+      $('.review-btn-decline').hide()
+      $('.application-modal-pwd').text(applicationObj.password)
+    }
+  }
+
+  function setReviewEvent() {
+    // 设置「通过」和「拒绝」按钮的动作
+    $('.review-btn-accept').off('click')
+    $('.review-btn-decline').off('click')
+    $('.review-btn-accept').click(function () {
+      var initialPwd = prompt('请为该用户设置初始密码，按下确认按钮后将发送邮件给用户', 'admin')
+      if (initialPwd != null && initialPwd != '') {
+        // 提交密码的MD5值，发送邮件，然后关闭模态框
+        $.post(
+          '/api/user/setProUserPassword',
+          {
+            'id': initialPwd
+          },
+          function (data, status) {
+            var realData = data.data
+            if (realData.status === 'updated') {
+              // TODO: 调用后端API，发送邮件
+            } else {
+              alert('密码设置出错，请重试')
+            }
+          }
+        )
+      }
+    })
   }
   /* 方法定义 END */
 
   /* 全局变量 START */
   var pageSize = 25
   var curPageData = []
+  var quill
   /* 全局变量 END */
 
   // 请求后台结果，获得所有条目

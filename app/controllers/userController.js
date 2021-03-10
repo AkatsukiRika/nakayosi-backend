@@ -34,12 +34,12 @@ exports.addProUser = async (ctx, next) => {
 
 /**
  * @method POST
- * @param {idNumber} 用户唯一ID(string)
+ * @param {id} 用户唯一ID(string)
  * @param {password} 已在客户端使用MD5加密过的密码(string)
  */
 exports.setProUserPassword = async (ctx, next) => {
     const requestBody = ctx.request.body
-    const reqId = requestBody.idNumber
+    const reqId = requestBody.id
     const elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_USER_SUFFIX + `/${reqId}/_update`
     const elasticReq = {
         'doc': {
@@ -51,9 +51,14 @@ exports.setProUserPassword = async (ctx, next) => {
     const resStatus = resData.result
     const resVersion = resData._version
     ctx.body = {
-        'status': resStatus,
+        'status': resStatus,    // "updated"代表成功
         'version': resVersion
     }
+}
+
+exports.sendResultEmail = async (ctx, next) => {
+    const requestBody = ctx.request.body
+    const reqId = requestBody.id
 }
 
 exports.getProUserListBg = async (ctx, next) => {

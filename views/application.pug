@@ -27,14 +27,24 @@ block content
             br/
             span.application-modal-id-num ID Number 
           p 
-            span.modal-bold 手机号码
+            span.modal-bold 手机号码：
             br/
             span.application-modal-phone Phone Number 
-          p 
-            span.modal-bold 电子邮箱
+          p
+            span.modal-bold 电子邮箱：
             br/
             span.application-modal-email Email Address
+          p 
+            span.modal-bold 申请内容：
+            br/
+            span.application-modal-text Application Text
+          p
+            span.modal-bold 密码(MD5值)：
+            br/
+            span.application-modal-pwd 未设置密码，待审核
         .modal-footer 
+          button.btn.btn-success.review-btn.review-btn-accept(type='button', data-dismiss='modal') 通过
+          button.btn.btn-danger.review-btn.review-btn-decline(type='button', data-dismiss='modal') 拒绝
           button.btn.btn-secondary(type='button', data-dismiss='modal') 完成
   style 
     include ../public/stylesheets/application.css
