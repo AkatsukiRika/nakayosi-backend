@@ -32,6 +32,9 @@ $(document).ready(function () {
         // 设置分页
         var dataCount = realData.count 
         var totalPages = Math.round(dataCount / pageSize)
+        if (totalPages < 1) {
+          totalPages = 1
+        }
         // 设置分页器显示
         $('.page-count').text('当前 ' + currentPage + ' / ' + totalPages + ' 页')
         if (initPagination) {
@@ -161,7 +164,10 @@ $(document).ready(function () {
     e.preventDefault()
     var content = $('.question-search-input').val()
     if (!content) {
-      alert('输入内容不可为空')
+      // 获得所有条目
+      currentPage = 1
+      clearPagination()
+      getResultList(0)
     } else {
       // 更新界面数据并设置分页
       currentPage = 1

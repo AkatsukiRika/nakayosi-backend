@@ -1,6 +1,15 @@
 extends layout 
 
 block content
+  .row.search-row 
+    .input-group.application-input-group 
+      input.application-search-input.form-control(
+        type='text',
+        placeholder='请在此处输入内容进行检索；得到结果后点击表格内的「ID」，可查看该条目相关的详细信息'
+      )
+      .input-group-append 
+        button.btn.btn-outline-secondary.search-btn(type='button')
+          | 通过姓名检索
   .row.application-row 
     table.application-table.table.table-bordered 
       thead 
@@ -11,6 +20,14 @@ block content
           th 手机号码
           th 电子邮箱
       tbody.application-table-body
+  .row.pagination-row 
+    ul.application-pagination.pagination
+      li.page-changer.page-item
+        a.page-link-prev.page-link(href='') PREV 
+      li.page-item 
+        a.page-count.page-link 共 0 页
+      li.page-changer.page-item
+        a.page-link-next.page-link(href='') NEXT 
   // 模态框，在点击ID时开启
   .modal.fade#detail-modal(tabindex='-1')
     .modal-dialog
@@ -43,8 +60,8 @@ block content
             br/
             span.application-modal-pwd 未设置密码，待审核
         .modal-footer 
-          button.btn.btn-success.review-btn.review-btn-accept(type='button', data-dismiss='modal') 通过
-          button.btn.btn-danger.review-btn.review-btn-decline(type='button', data-dismiss='modal') 拒绝
+          button.btn.btn-success.review-btn.review-btn-accept(type='button') 通过
+          button.btn.btn-danger.review-btn.review-btn-decline(type='button') 拒绝
           button.btn.btn-secondary(type='button', data-dismiss='modal') 完成
   style 
     include ../public/stylesheets/application.css

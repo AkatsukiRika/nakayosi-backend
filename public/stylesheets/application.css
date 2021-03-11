@@ -5,6 +5,12 @@
     background-color: #00000080;
 }
 
+.search-row {
+    margin-top: 15px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
 .application-table {
     color: white;
     margin-bottom: 0;
@@ -24,4 +30,20 @@
 
 .review-btn {
     display: none;
+}
+
+.pagination-row {
+    margin: 0 auto;
+}
+
+.application-pagination {
+    color: black;
+    margin-top: 15px;
+    margin-left: 25px;
+    margin-right: 25px;
+    text-align: center;
+}
+
+.page-changer {
+    font-weight: bold;
 }

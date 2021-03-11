@@ -1,5 +1,6 @@
 const state = require('../../state')
 const axios = require('axios')
+const nodeMailer = require('nodemailer')
 
 const DEFAULT_FROM = 0
 const DEFAULT_SIZE = 25
@@ -32,6 +33,26 @@ exports.addProUser = async (ctx, next) => {
     }
 }
 
+exports.delProUser = async (ctx, next) => {
+    const requestBody = ctx.request.body
+    const elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_USER_DEL_SUFFIX
+    const elasticReq = {
+        'query': {
+            'ids': {
+                'values': [requestBody.id]
+            }
+        }
+    }
+    const res = await axios.post(elasticUrl, elasticReq)
+    const resData = res.data
+    const resDeletedCount = resData.deleted
+    const resFailures = resData.failures
+    ctx.body = {
+        'deleted': resDeletedCount,
+        'failures': resFailures
+    }
+}
+
 /**
  * @method POST
  * @param {id} 用户唯一ID(string)
@@ -59,6 +80,49 @@ exports.setProUserPassword = async (ctx, next) => {
 exports.sendResultEmail = async (ctx, next) => {
     const requestBody = ctx.request.body
     const reqId = requestBody.id
+    // 这里要传明文密码，而不是MD5结果
+    const reqPassword = requestBody.password
+    // 根据ID获取用户信息
+    const elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_USER_SUFFIX + state.ELASTIC_SEARCH_SUFFIX
+    const elasticReq = {
+        'query': {
+            'ids': {
+                'values': [reqId]
+            }
+        }
+    }
+    const elasticRes = await axios.post(elasticUrl, elasticReq)
+    const resData = elasticRes.data
+    const userObj = resData.hits.hits[0]._source
+    if (!userObj) {
+        ctx.body = {
+            'status': 'fail',
+            'message': 'no such user in database'
+        }
+    } else {
+        const transporter = nodeMailer.createTransport(state.SMTP_ADDR)
+        const options = {
+            from: 'Nakayosi Dev <1345860061@qq.com>',
+            to: userObj.email,
+            subject: '您的心理专家号申请已通过！请打开邮件查看初始密码',
+            text: `您的初始密码为：${reqPassword}，请务必不要告知他人`
+        }
+        try {
+            const info = await transporter.sendMail(options)
+            ctx.body = {
+                'status': 'success',
+                'message': info.response,
+                'accepted': info.accepted,
+                'rejected': info.rejected,
+                'pending': info.pending
+            }
+        } catch (error) {
+            ctx.body = {
+                'status': 'fail',
+                'message': error.message
+            }
+        }
+    }
 }
 
 exports.getProUserListBg = async (ctx, next) => {
