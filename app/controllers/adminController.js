@@ -1,6 +1,9 @@
 const state = require('../../state')
 const axios = require('axios')
 
+const DEFAULT_FROM = 0
+const DEFAULT_SIZE = 10
+
 exports.addAdmin = async (ctx, next) => {
   const requestBody = ctx.request.body
   const elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_ADMIN_SUFFIX
@@ -111,5 +114,37 @@ exports.getUserLoginStatus = async (ctx, next) => {
     ctx.body = {
       'loggedIn': false
     }
+  }
+}
+
+exports.getAdminListBg = async (ctx, next) => {
+  const elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_ADMIN_SUFFIX + state.ELASTIC_SEARCH_SUFFIX
+  const elasticReq = {
+    'from': ctx.query.from || DEFAULT_FROM,
+    'size': ctx.query.size || DEFAULT_SIZE
+  }
+  if (ctx.query.username) {
+    elasticReq.query = {
+      'match': {
+        'username': ctx.query.username
+      }
+    }
+  }
+  const res = await axios.post(elasticUrl, elasticReq)
+  const resultList = res.data.hits.hits
+  let responseList = []
+  for (let i = 0; i < resultList.length; i++) {
+    responseList.push({
+      'id': resultList[i]._id,
+      'username': resultList[i]._source.username,
+      'password': resultList[i]._source.password,
+      'phoneNumber': resultList[i]._source.phoneNumber,
+      'email': resultList[i]._source.email
+    })
+  }
+  ctx.body = {
+    'count': res.data.hits.total,
+    'request': ctx.request,
+    'response': responseList
   }
 }

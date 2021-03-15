@@ -1,0 +1,86 @@
+extends layout 
+
+block content 
+  .row.search-row 
+    .input-group.manage-input-group 
+      .input-group-prepend 
+        button.btn.btn-outline-secondary.add-btn(type='button')
+          | 添加一位管理员
+      input.manage-search-input.form-control(
+        type='text',
+        placeholder='请在此处输入内容进行检索；得到结果后点击表格内的「ID」，可查看该条目相关的详细信息'
+      )
+      .input-group-append 
+        button.btn.btn-outline-secondary.search-btn(type='button')
+          | 通过用户名检索
+  .row.manage-row 
+    table.manage-table.table.table-bordered 
+      thead 
+        tr 
+          th ID 
+          th 用户名
+          th 手机号码
+          th 电子邮箱
+      tbody.manage-table-body
+  .row.pagination-row 
+    ul.manage-pagination.pagination
+      li.page-changer.page-item
+        a.page-link-prev.page-link(href='') PREV 
+      li.page-item 
+        a.page-count.page-link 共 0 页
+      li.page-changer.page-item
+        a.page-link-next.page-link(href='') NEXT 
+  // 模态框，在点击ID时开启
+  .modal.fade#detail-modal(tabindex='-1')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h5.modal-title.manage-modal-id 管理员ID
+        .modal-body 
+          p 
+            span.modal-bold 用户名：
+            br/
+            span.manage-modal-username User Name
+          p
+            span.modal-bold 密码(MD5值)：
+            br/
+            span.manage-modal-pwd Password MD5
+          p 
+            span.modal-bold 手机号码：
+            br/
+            span.manage-modal-phone Phone Number 
+          p
+            span.modal-bold 电子邮箱：
+            br/
+            span.manage-modal-email Email Address
+        .modal-footer
+          button.btn.btn-danger.btn-delete(type='button') 删除
+          button.btn.btn-secondary(type='button', data-dismiss='modal') 完成
+  // 模态框，添加管理员时显示
+  .modal.fade#append-modal(tabindex='-1')
+    .modal-dialog 
+      .modal-content 
+        .modal-header 
+          h5.modal-title 添加新管理员
+        .modal-body 
+          form.add-form
+            .form-group 
+              label(for='username-input', name='username') 用户名
+              input.form-control#username-input 
+              small.form-text.text-muted 只能使用英文、数字和下划线
+            .form-group 
+              label(for='password-input', name='password') 密码
+              input.form-control(type='password')#password-input
+            .form-group 
+              label(for='phone-input', name='phone') 手机号码
+              input.form-control(type='tel')#phone-input
+            .form-group 
+              label(for='email-input', name='email') 电子邮箱
+              input.form-control(type='email')#email-input
+        .modal-footer 
+          button.btn.btn-secondary(type='button', data-dismiss='modal') 取消
+          button.btn.btn-success(type='button') 完成
+  style 
+    include ../public/stylesheets/management.css
+  script 
+    include ../public/javascripts/management.js

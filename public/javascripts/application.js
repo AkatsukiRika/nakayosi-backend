@@ -226,6 +226,9 @@ $(document).ready(function () {
   var currentPage = 1
   /* 全局变量 END */
 
+  // 设置导航栏高亮
+  $('#nav-apply').addClass('active')
+
   // 请求后台结果，获得所有条目
   getResultList(0)
 

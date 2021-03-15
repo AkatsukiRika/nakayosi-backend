@@ -1,0 +1,49 @@
+.search-row {
+    margin-top: 15px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.manage-row {
+    margin-top: 15px;
+    margin-left: 25px;
+    margin-right: 25px;
+    background-color: #00000080;
+}
+
+.manage-table {
+    color: white;
+    margin-bottom: 0;
+}
+
+#detail-modal {
+    color: black;
+}
+
+#append-modal {
+    color: black;
+}
+
+.modal-td-id {
+    cursor: pointer;
+}
+
+.modal-bold {
+    font-weight: bold;
+}
+
+.pagination-row {
+    margin: 0 auto;
+}
+
+.manage-pagination {
+    color: black;
+    margin-top: 15px;
+    margin-left: 25px;
+    margin-right: 25px;
+    text-align: center;
+}
+
+.page-changer {
+    font-weight: bold;
+}

@@ -6,5 +6,6 @@ router.post('/delAdmin', adminController.delAdmin);
 router.post('/adminLogin', adminController.adminLogin);
 router.post('/adminLogout', adminController.adminLogout);
 router.get('/getUserLoginStatus', adminController.getUserLoginStatus);
+router.get('/getAdminListBg', adminController.getAdminListBg);
 
 module.exports = router;

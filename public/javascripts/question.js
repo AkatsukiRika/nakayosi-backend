@@ -122,6 +122,9 @@ $(document).ready(function () {
   // 当前页面的数据，暂存在这个数组里
   var curPageData = []
 
+  // 设置导航栏高亮
+  $('#nav-question').addClass('active')
+
   // 请求后台结果，获得所有问题
   getResultList(0)
 

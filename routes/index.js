@@ -16,4 +16,8 @@ router.get('question', async (ctx, next) => {
   await ctx.render('question')
 })
 
+router.get('management', async (ctx, next) => {
+  await ctx.render('management')
+})
+
 module.exports = router
