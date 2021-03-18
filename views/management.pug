@@ -62,24 +62,38 @@ block content
       .modal-content 
         .modal-header 
           h5.modal-title 添加新管理员
-        .modal-body 
-          form.add-form
+        form.add-form
+          .modal-body 
             .form-group 
               label(for='username-input', name='username') 用户名
-              input.form-control#username-input 
+              input.form-control#username-input(
+                pattern='^[0-9a-zA-Z_]{1,}$',
+                required
+              ) 
               small.form-text.text-muted 只能使用英文、数字和下划线
             .form-group 
               label(for='password-input', name='password') 密码
-              input.form-control(type='password')#password-input
+              input.form-control#password-input(
+                type='password',
+                required
+              )
             .form-group 
               label(for='phone-input', name='phone') 手机号码
-              input.form-control(type='tel')#phone-input
+              input.form-control#phone-input(
+                type='tel',
+                pattern='^[1]([3-9])[0-9]{9}$',
+                required 
+              )
             .form-group 
               label(for='email-input', name='email') 电子邮箱
-              input.form-control(type='email')#email-input
-        .modal-footer 
-          button.btn.btn-secondary(type='button', data-dismiss='modal') 取消
-          button.btn.btn-success(type='button') 完成
+              input.form-control#email-input(
+                type='email',
+                pattern='^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$',
+                required 
+              )
+          .modal-footer 
+            button.btn.btn-secondary(type='button', data-dismiss='modal') 取消
+            button.btn.btn-success.submit-btn(type='submit') 完成
   style 
     include ../public/stylesheets/management.css
   script 

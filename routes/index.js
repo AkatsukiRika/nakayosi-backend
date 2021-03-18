@@ -20,4 +20,8 @@ router.get('management', async (ctx, next) => {
   await ctx.render('management')
 })
 
+router.get('webapi', async (ctx, next) => {
+  await ctx.render('webapi')
+})
+
 module.exports = router

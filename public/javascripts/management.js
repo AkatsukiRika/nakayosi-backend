@@ -65,6 +65,8 @@ $(document).ready(function () {
     $('.manage-modal-pwd').text(manageObj.password)
     $('.manage-modal-phone').text(manageObj.phoneNumber)
     $('.manage-modal-email').text(manageObj.email)
+    // 设置当前ID状态
+    currentId = manageObj.id
   }
 
   function setPagination(totalPages, username) {
@@ -103,6 +105,54 @@ $(document).ready(function () {
     $('.page-link-prev').off('click')
     $('.page-link-next').off('click')
   }
+
+  function addAdmin(adminObj) {
+    // 添加管理员
+    $.post(
+      '/api/admin/addAdmin',
+      adminObj,
+      function (data, status) {
+        var realData = data.data
+        console.log('addAdmin#res', realData)
+        if (realData.status !== 'created') {
+          alert('创建管理员失败')
+        } else {
+          alert('创建管理员成功')
+        }
+        // 手动关闭模态框
+        $('#append-modal').modal('hide')
+        // 重新拉取数据
+        currentPage = 1
+        clearPagination()
+        getResultList(0)
+      }
+    )
+  }
+
+  function delAdmin(id) {
+    // 删除管理员
+    $.post(
+      '/api/admin/delAdmin',
+      {
+        'id': id
+      },
+      function (data, status) {
+        var realData = data.data
+        console.log('delAdmin#res', realData)
+        if (realData.deleted > 0) {
+          alert('删除成功')
+        } else {
+          alert('删除失败，请重试')
+        }
+        // 手动关闭模态框
+        $('#detail-modal').modal('hide')
+        // 刷新数据
+        currentPage = 1
+        clearPagination()
+        getResultList(0)
+      }
+    )
+  }
   /* 方法定义 END */
   
 
@@ -110,6 +160,7 @@ $(document).ready(function () {
   var pageSize = 25
   var curPageData = []
   var currentPage = 1
+  var currentId = ''
   /* 全局变量 END */
 
   // 设置导航栏高亮
@@ -141,8 +192,28 @@ $(document).ready(function () {
     $('#append-modal').modal()
   })
 
-  // 初始化添加表单的验证器
-  $('.add-form').bootstrapValidator({
-    
+  // 设置表单提交验证
+  $('.add-form').submit(function (e) {
+    e.preventDefault()
+    var f = $(this)
+    if (f[0].checkValidity() === false) {
+      e.stopPropagation()
+    } else {
+      var originalPwd = $('#password-input').val()
+      var encryptedPwd = CryptoJS.MD5(originalPwd).toString()
+      var adminObj = {
+        'username': $('#username-input').val(),
+        'password': encryptedPwd,
+        'phoneNumber': $('#phone-input').val(),
+        'email': $('#email-input').val()
+      }
+      addAdmin(adminObj)
+    }
+    f.addClass('was-validated')
+  })
+
+  // 设置删除按钮事件
+  $('.btn-delete').click(function (e) {
+    delAdmin(currentId)
   })
 })

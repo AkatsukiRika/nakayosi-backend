@@ -212,6 +212,7 @@ $(document).ready(function () {
         // 手动关闭模态框
         $('#detail-modal').modal('hide')
         // 刷新数据
+        currentPage = 1
         clearPagination()
         getResultList(0)
       }
