@@ -1,4 +1,13 @@
 extends layout 
 
 block content 
-  | Web API 文档页面
+  .row.doc-row
+    .col-md-3.offset-md-3
+      .tree 
+    .col-md-3.api-desc-container
+      p API 描述：
+      p.api-desc 点击API名称时，此处会显示API描述
+  style 
+    include ../public/stylesheets/webapi.css 
+  script 
+    include ../public/javascripts/webapi.js
