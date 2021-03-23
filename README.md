@@ -51,12 +51,10 @@ User Model: `curl -X PUT http://127.0.0.1:9200/user`
           "type": "keyword"
         },
         "richText": {
-          "type": "keyword",
-          "index": "false"
+          "type": "keyword"
         },
         "password": {
-          "type": "keyword",
-          "index": "false"
+          "type": "keyword"
         }
       }
     }

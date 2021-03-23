@@ -82,6 +82,18 @@ $(document).ready(function () {
         {
           text: '/delProUser',
           id: 'user-del-pro'
+        },
+        {
+          text: '/userLogin',
+          id: 'pro-user-login'
+        },
+        {
+          text: '/getUserLoginStatus',
+          id: 'pro-user-get-status'
+        },
+        {
+          text: '/proUserLogout',
+          id: 'pro-user-logout'
         }
       ]
     },
@@ -312,7 +324,30 @@ $(document).ready(function () {
       'count (num): 与传入值匹配的所有项目数量<br />' +
       'request (obj): 向API接口提交的请求内容<br />' +
       'response (arr): 返回的管理员列表<br />' +
-      '--> 包含属性：id / username / password / phoneNumber / email'
+      '--> 包含属性：id / username / password / phoneNumber / email',
+    'pro-user-login':
+      '地址：/api/user/userLogin<br />' +
+      '方法：POST<br />' +
+      '传入值：<br />' +
+      'email (str): 专家号的邮箱<br />' +
+      'password (str): 专家号的密码（需经过MD5加密）<br />' +
+      '返回值：<br />' +
+      'status (str): 登录状态，该值只会为success或fail<br />' +
+      'id (str): 登录成功的用户ID<br />' +
+      'realName (str): 登录成功的用户真实姓名<br />' +
+      'errMsg (str): 错误提示，仅在status为fail时有值',
+    'pro-user-get-status':
+      '地址：/api/user/getUserLoginStatus<br />' +
+      '方法：GET<br />' +
+      '返回值：<br />' +
+      'loggedIn (bool): 是否有已经登录的用户，仅在为true时才会返回下面的几个参数<br />' +
+      'proUserId (str): 已登录的用户ID<br />' +
+      'proRealName (str): 已登录的用户真实姓名',
+    'pro-user-logout':
+      '地址：/api/user/proUserLogout<br />' +
+      '方法：POST<br />' +
+      '返回值：<br />' +
+      'status (bool): 登出状态，成功时为success'
   }
 
   // 设置导航栏高亮
@@ -380,6 +415,18 @@ $(document).ready(function () {
 
   $('#user-del-pro').click(function () {
     $('.api-desc').html(descMap['user-del-pro'])
+  })
+
+  $('#pro-user-login').click(function () {
+    $('.api-desc').html(descMap['pro-user-login'])
+  })
+
+  $('#pro-user-get-status').click(function () {
+    $('.api-desc').html(descMap['pro-user-get-status'])
+  })
+
+  $('#pro-user-logout').click(function () {
+    $('.api-desc').html(descMap['pro-user-logout'])
   })
 
   $('#admin-add').click(function () {

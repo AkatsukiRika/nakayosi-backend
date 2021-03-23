@@ -73,7 +73,7 @@ exports.getResultListBg = async (ctx, next) => {
             'id': resultList[i]._id,
             'title': resultList[i]._source.title,
             'question': resultList[i]._source.question,
-            'answerCount': resultList[i]._source.answers.length,
+            'answerCount': resultList[i]._source.answers ? resultList[i]._source.answers.length : 0,
             'answers': resultList[i]._source.answers,
             'type': resultList[i]._source.type
         })

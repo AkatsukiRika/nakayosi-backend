@@ -66,15 +66,49 @@ $(document).ready(function () {
     $('.question-modal-content').text(questionObj.question)
     var answerList = questionObj.answers 
     $('.modal-answer').html('')
-    for (let i = 0; i < answerList.length; i++) {
-      var docString =
-        '<p>\n' +
-        `\t<span class="modal-bold">回答${i + 1}：</span>\n` +
-        '\t<br />\n' +
-        '\t<span>' + answerList[i] + '</span>\n'
-      $('.modal-answer').append(docString)
+    if (answerList) {
+      for (let i = 0; i < answerList.length; i++) {
+        var docString =
+          '<p>\n' +
+          `\t<span class="modal-bold">回答${i + 1}：</span>\n` +
+          '\t<br />\n' +
+          '\t<span>' + answerList[i] + '</span>\n'
+        $('.modal-answer').append(docString)
+      }
     }
-    $('.question-modal-type').text(questionObj.type)
+    if (questionObj.type) {
+      $('.question-modal-type').text(questionObj.type)
+    } else {
+      $('.question-modal-type').text('暂无此字段')
+    }
+    // 设置删除按钮动作
+    $('.delete-btn').click(function (e) {
+      e.preventDefault()
+      var confirmRes = confirm('确认删除本条记录？')
+      if (confirmRes === true) {
+        deleteQuestion(questionObj.id)
+      }
+    })
+  }
+
+  function deleteQuestion(id) {
+    $.post(
+      '/api/question/delQuestion',
+      {
+        'id': id
+      },
+      function (data, status) {
+        var realData = data.data
+        console.log('delQuestion#res', realData)
+        if (realData.deleted && realData.deleted > 0) {
+          alert('删除成功')
+        } else {
+          alert('删除失败')
+        }
+        // 手动关闭模态框
+        $('#detail-modal').modal('hide')
+      }
+    )
   }
 
   function setPagination(totalPages, question) {
