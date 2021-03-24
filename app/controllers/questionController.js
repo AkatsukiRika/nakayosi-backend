@@ -51,3 +51,71 @@ exports.delQuestion = async (ctx, next) => {
         'failures': resFailures
     }
 }
+
+// 待补充文档
+exports.addAnswer = async (ctx, next) => {
+    const requestBody = ctx.request.body
+    // 先根据前端传的id找出该条question记录的内容
+    let elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_MAIN_SUFFIX + state.ELASTIC_SEARCH_SUFFIX
+    let elasticReq = {
+        'query': {
+            'ids': {
+                'values': [requestBody.id]
+            }
+        }
+    }
+    let res = await axios.post(elasticUrl, elasticReq)
+    const resData = res.data
+    const hitObj = resData.hits.hits
+    const questionObj = hitObj[0]._source
+    questionObj.answers.push(requestBody.answer)
+    // 将新questionObj重新发送给ElasticSearch
+    elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_MAIN_SUFFIX + `/${requestBody.id}`
+    elasticReq = questionObj
+    try {
+        res = await axios.put(elasticUrl, elasticReq)
+        ctx.body = {
+            'status': 'success',
+            'errMsg': ''
+        }
+    } catch (error) {
+        ctx.body = {
+            'status': 'fail',
+            'errMsg': error.description
+        }
+    }
+}
+
+// 待补充文档
+exports.delLastAnswer = async (ctx, next) => {
+    const requestBody = ctx.request.body
+    // 先根据前端传的id找出该条question记录的内容
+    let elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_MAIN_SUFFIX + state.ELASTIC_SEARCH_SUFFIX
+    let elasticReq = {
+        'query': {
+            'ids': {
+                'values': [requestBody.id]
+            }
+        }
+    }
+    let res = await axios.post(elasticUrl, elasticReq)
+    const resData = res.data
+    const hitObj = resData.hits.hits
+    const questionObj = hitObj[0]._source
+    questionObj.answers.pop()
+    // 将新questionObj重新发送给ElasticSearch
+    elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_MAIN_SUFFIX + `/${requestBody.id}`
+    elasticReq = questionObj
+    try {
+        res = await axios.put(elasticUrl, elasticReq)
+        ctx.body = {
+            'status': 'success',
+            'errMsg': ''
+        }
+    } catch (error) {
+        ctx.body = {
+            'status': 'fail',
+            'errMsg': error.description
+        }
+    }
+}

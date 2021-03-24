@@ -82,11 +82,20 @@ $(document).ready(function () {
       $('.question-modal-type').text('暂无此字段')
     }
     // 设置删除按钮动作
+    $('.delete-btn').off('click')
     $('.delete-btn').click(function (e) {
       e.preventDefault()
       var confirmRes = confirm('确认删除本条记录？')
       if (confirmRes === true) {
         deleteQuestion(questionObj.id)
+      }
+    })
+    $('.delete-ans-btn').off('click')
+    $('.delete-ans-btn').click(function (e) {
+      e.preventDefault()
+      var confirmRes = confirm('确认删除最后一条回答？')
+      if (confirmRes === true) {
+        deleteAnswer(questionObj.id)
       }
     })
   }
@@ -107,6 +116,26 @@ $(document).ready(function () {
         }
         // 手动关闭模态框
         $('#detail-modal').modal('hide')
+      }
+    )
+  }
+
+  function deleteAnswer(id) {
+    $.post(
+      '/api/question/delLastAnswer',
+      {
+        'id': id
+      },
+      function (data, status) {
+        var realData = data.data
+        console.log('delLastAnswer#res', realData)
+        if (realData.status === 'success') {
+          alert('删除成功')
+        } else {
+          alert('删除失败')
+        }
+        // 手动关闭模态框
+        $('#detail-modal').modal('hide')  
       }
     )
   }
