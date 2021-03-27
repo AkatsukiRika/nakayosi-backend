@@ -68,7 +68,11 @@ exports.addAnswer = async (ctx, next) => {
     const resData = res.data
     const hitObj = resData.hits.hits
     const questionObj = hitObj[0]._source
-    questionObj.answers.push(requestBody.answer)
+    if (questionObj.answers) {
+        questionObj.answers.push(requestBody.answer)
+    } else {
+        questionObj.answers = [requestBody.answer]
+    }
     // 将新questionObj重新发送给ElasticSearch
     elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_MAIN_SUFFIX + `/${requestBody.id}`
     elasticReq = questionObj
@@ -102,6 +106,12 @@ exports.delLastAnswer = async (ctx, next) => {
     const resData = res.data
     const hitObj = resData.hits.hits
     const questionObj = hitObj[0]._source
+    if (!questionObj.answers) {
+        ctx.body = {
+            'status': 'fail',
+            'errMsg': '该问题的回答数已经为0'
+        }
+    }
     questionObj.answers.pop()
     // 将新questionObj重新发送给ElasticSearch
     elasticUrl = state.ELASTIC_ADDR + state.ELASTIC_MAIN_SUFFIX + `/${requestBody.id}`
